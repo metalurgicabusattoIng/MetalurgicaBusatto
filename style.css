@@ -1,0 +1,1495 @@
+/* =====================================================================
+   METALÚRGICA BUSATTO — style.css
+   ---------------------------------------------------------------
+   Pensalo como el archivo de "constantes globales" + "layout" de
+   tu programa. En C definirías #define COLOR_PRINCIPAL "..."; acá
+   usamos VARIABLES CSS (custom properties), que son básicamente
+   eso: un valor con nombre que podés reutilizar en todo el archivo
+   y cambiar en UN solo lugar.
+===================================================================== */
+
+
+/* =====================================================================
+   1. VARIABLES GLOBALES (":root" = el "elemento raíz" del documento,
+      es decir, un lugar válido para declarar variables que se puedan
+      usar en cualquier parte del CSS, como variables globales en C)
+===================================================================== */
+
+:root {
+    
+    /* --- PALETA DE COLORES OBLIGATORIA ---
+       70% tonos claros y neutros, 25% azules industriales,
+       5% acentos discretos. Nada de rojos, naranjas ni verdes
+       flúo: buscamos "seriedad", no "urgencia". */
+    --color-fondo-principal: #F5F7FA;   /* fondo general de la página */
+    --color-fondo-secundario: #D9DDE1;  /* fondo alterno de secciones */
+    --color-azul-industrial: #234A5E;   /* azul principal (botones, header) */
+    --color-azul-acero: #3B5F73;        /* azul secundario, degradados */
+    --color-gris-grafito: #2F3A45;      /* texto oscuro, overlays */
+    --color-gris-acero-claro: #D6DEE5;  /* bordes, divisores suaves */
+    --color-blanco: #FFFFFF;
+    --color-acento: #6C8A9B;            /* acento discreto, detalles */
+    --color-Whatsapp: #11ac44;   /*Whatsapp logo */
+    /* --- ACENTO CÁLIDO (NUEVO) ---
+       Un cobre/ámbar apagado, inspirado en la chispa de soldadura
+       y el óxido natural del metal trabajado. Se usa con MUCHA
+       moderación (íconos puntuales, algún detalle, el CTA), nunca
+       como color de fondo grande: es la "pizca de picante" que le
+       da variedad a la paleta fría sin romper la seriedad general. */
+    --color-ambar: #B8794A;
+    --color-ambar-hover: #A3673C;
+
+    /* Variante de azul para estados "hover" (cuando el mouse pasa
+       por encima). Es un poco más clara que el azul principal. */
+    --color-azul-hover: #2C5B72;
+
+    /* --- TINTES SUAVES PARA FONDOS DE ÍCONOS ---
+       Son los mismos colores de arriba pero MUY diluidos (baja
+       opacidad), para usar como fondo de un "chip" circular detrás
+       de cada ícono. Le dan color a la página sin gritar, porque
+       ocupan poco espacio y son translúcidos. */
+    --tinte-azul-industrial: rgba(35, 74, 94, 0.10);
+    --tinte-azul-acero: rgba(59, 95, 115, 0.10);
+    --tinte-acento: rgba(108, 138, 155, 0.16);
+    --tinte-ambar: rgba(184, 121, 74, 0.14);
+    --tinte-grafito: rgba(47, 58, 69, 0.08);
+
+    /* --- TIPOGRAFÍA ---
+       Montserrat para títulos (más robusta, "de acero"),
+       Inter para textos largos (más liviana y legible). */
+    --fuente-titulos: 'Montserrat', sans-serif;
+    --fuente-textos: 'Inter', sans-serif;
+
+    /* --- BORDES Y SOMBRAS ---
+       Bordes suaves y sombras muy sutiles: nada de esquinas
+       filosas ni sombras pesadas tipo "efecto plástico". */
+    --radio-borde: 12px;
+    --sombra-suave: 0 4px 20px rgba(35, 74, 94, 0.08);
+    --sombra-media: 0 8px 30px rgba(35, 74, 94, 0.14);
+
+    /* Altura del header fijo. La usamos en varios lugares (por
+       ejemplo, para que el contenido no quede tapado detrás del
+       header), así que la definimos una sola vez acá. */
+    --alto-header: 76px;
+
+    /* Duración estándar de las transiciones/animaciones suaves. */
+    --transicion-rapida: 0.2s ease;
+    --transicion-normal: 0.3s ease;
+    
+}
+
+
+/* =====================================================================
+   2. RESET BÁSICO
+   Cada navegador trae márgenes y tamaños "por defecto" distintos
+   para cada etiqueta (como si cada compilador de C inicializara
+   variables no declaradas con basura distinta). Este bloque
+   "resetea" eso para partir todos del mismo punto.
+===================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    /* box-sizing: border-box hace que el padding y el borde de un
+       elemento se cuenten DENTRO de su ancho total, no se sumen
+       aparte. Sin esto, calcular anchos en un layout es una pesadilla. */
+    box-sizing: border-box;
+}
+
+html {
+    /* Hace que los links internos (href="#seccion") se desplacen
+       con animación suave en vez de saltar de golpe. Esto es un
+       respaldo por CSS; script.js hace lo mismo con scrollIntoView()
+       para tener más control (por ejemplo, restar la altura del
+       header fijo). */
+    scroll-behavior: smooth;
+}
+
+body {
+    /*font-family: var(--fuente-textos);
+    background-color: var(--color-fondo-principal);
+    color: var(--color-gris-grafito);
+    line-height: 1.6;*/
+    /* Suaviza el renderizado de las letras en pantallas de alta
+       densidad de píxeles (celulares y notebooks modernas). */
+    /*-webkit-font-smoothing: antialiased;*/
+    font-family: var(--fuente-textos);
+    background-image:
+
+        url('./assets/Metal-Texture.jpg');
+
+    background-size: cover;
+    background-attachment: fixed;
+    color: var(--color-gris-grafito);
+}
+
+/* Los links no llevan subrayado ni color azul por defecto; cada
+   componente define su propio estilo de link donde corresponde. */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    /* Ninguna imagen puede ser más ancha que su contenedor.
+       Esto es LA regla básica de imágenes responsive. */
+    max-width: 100%;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+/* --- ACCESIBILIDAD: estado de foco visible ---
+   Cuando alguien navega con el teclado (tecla Tab), el navegador
+   marca qué elemento está "activo". Nunca hay que eliminar este
+   contorno sin reemplazarlo por otro visible: si no, una persona
+   que no usa mouse pierde total referencia de dónde está parada. */
+:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
+}
+
+
+/* =====================================================================
+   3. UTILIDADES GENERALES
+   Clases "de ayuda" reutilizables en toda la página, para no
+   repetir el mismo valor de padding/ancho en cada sección
+   (equivalente a una función utilitaria compartida en C).
+===================================================================== */
+
+.container {
+    /* Ancho máximo del contenido, centrado con margin auto.
+       Evita que en pantallas gigantes (ej. 2560px) el texto
+       quede estirado de punta a punta. */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.eyebrow {
+    /* "Eyebrow" = la palabra chiquita arriba de un título grande,
+       tipo etiqueta de categoría. Ayuda a que el usuario entienda
+       de qué trata la sección antes de leer el título completo. */
+    display: inline-block;
+    font-family: var(--fuente-titulos);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-azul-acero);
+    margin-bottom: 12px;
+}
+
+.eyebrow--light {
+    /* Variante para usar sobre fondos oscuros (ej: sección
+       "Capacidades", que tiene fondo azul industrial). */
+    color: var(--color-acento);
+}
+
+.section-title {
+    font-family: var(--fuente-titulos);
+    font-weight: 700;
+    /* clamp(mínimo, preferido, máximo): el tamaño de letra fluye
+       entre 1.6rem y 2.4rem según el ancho de pantalla, sin
+       necesidad de escribir una media query solo para esto.
+       Es la forma moderna de hacer tipografía "responsive". */
+    font-size: clamp(1.6rem, 3vw + 1rem, 2.4rem);
+    color: var(--color-gris-grafito);
+    max-width: 700px;
+    margin-bottom: 24px;
+}
+
+.section-title--light {
+    color: var(--color-blanco);
+}
+
+/* Todas las <section> comparten el mismo "aire" vertical, para
+   que el ritmo de la página se sienta ordenado y consistente. */
+section {
+    padding: 96px 0;
+}
+
+
+/* =====================================================================
+   4. BOTONES
+   Dos variantes: "primary" (sólido, azul industrial) y
+   "secondary" (transparente, para usar sobre fondos oscuros
+   como el hero). Ambos comparten la base ".btn".
+===================================================================== */
+
+.btn {
+    display: inline-block;
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 16px 32px;
+    border-radius: var(--radio-borde);
+    transition: background-color var(--transicion-normal),
+                transform var(--transicion-rapida),
+                border-color var(--transicion-normal);
+    text-align: center;
+}
+
+.btn--primary {
+    background-color: var(--color-azul-industrial);
+    color: var(--color-blanco);
+}
+
+.btn--primary:hover {
+    background-color: var(--color-azul-hover);
+    transform: translateY(-2px);
+}
+
+.btn--secondary {
+    background: transparent;
+    border: 1px solid var(--color-blanco);
+    color: var(--color-blanco);
+}
+
+.btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Variante cálida, reservada para UNA sola acción destacada por
+   página (el CTA principal antes del formulario). Usarla en más
+   de un lugar le restaría fuerza al gesto. */
+.btn--ambar {
+    background-color: var(--color-ambar);
+    color: var(--color-blanco);
+}
+
+.btn--ambar:hover {
+    background-color: var(--color-ambar-hover);
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================================
+   5. HEADER FIJO
+   position: fixed saca al header del flujo normal del documento
+   y lo "clava" en una posición relativa a la ventana (viewport),
+   no a la página. Por eso el body necesita un padding-top más
+   abajo, para que el contenido no arranque tapado detrás.
+===================================================================== */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--alto-header);
+    background-color: rgba(245, 247, 250, 0.92);
+    /* "backdrop-filter: blur" difumina lo que se ve DETRÁS del
+       header al hacer scroll, dando un efecto vidrio esmerilado
+       elegante y sutil (muy usado en sitios industriales modernos). */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000; /* Se asegura de quedar por encima de todo lo demás */
+    transition: background-color var(--transicion-normal), box-shadow var(--transicion-normal);
+    border-bottom: 1px solid transparent;
+}
+
+/* Esta clase la agrega script.js con JavaScript cuando el usuario
+   hace scroll hacia abajo (ver función handleHeaderScroll()).
+   Le da al header un fondo más opaco y una sombra, para separarlo
+   visualmente del contenido que pasa por debajo. */
+.header.is-scrolled {
+    background-color: rgba(245, 247, 250, 0.98);
+    box-shadow: var(--sombra-suave);
+    border-bottom-color: var(--color-gris-acero-claro);
+}
+
+.header__container {
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.header__logo-img {
+    height: 80px;   /* ajustá el tamaño */
+    width: auto;
+    display: block;
+}
+
+.header__logo span {
+    color: var(--color-azul-industrial);
+}
+
+/* --- NAV: versión de escritorio ---
+   display: flex ubica los links en fila, uno al lado del otro
+   (como imprimir varios valores separados por espacios en una
+   misma línea, en vez de con salto de línea). */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav__link {
+    font-family: var(--fuente-textos);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--color-gris-grafito);
+    position: relative;
+    padding: 4px 0;
+    transition: color var(--transicion-rapida);
+}
+
+/* Efecto de "subrayado que crece" al pasar el mouse. El truco es
+   tener una línea con ancho 0 y animarla a ancho 100% en :hover. */
+.nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: var(--color-azul-industrial);
+    transition: width var(--transicion-normal);
+}
+
+.nav__link:hover {
+    color: var(--color-azul-industrial);
+}
+
+.nav__link:hover::after {
+    width: 100%;
+}
+
+.nav__whatsapp {
+    background-color: var(--color-Whatsapp);
+    color: var(--color-blanco);
+    padding: 10px 20px;
+    border-radius: var(--radio-borde);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color var(--transicion-normal);
+}
+
+.nav__whatsapp:hover {
+    background-color: var(--color-azul-hover);
+}
+
+/* --- BOTÓN HAMBURGUESA ---
+   Oculto por defecto (display: none). Solo aparece en pantallas
+   chicas, gracias a la media query que está más abajo en este
+   mismo archivo (buscá "@media (max-width: 768px)"). */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 26px;
+    height: 20px;
+}
+
+.hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-gris-grafito);
+    border-radius: 2px;
+    transition: transform var(--transicion-normal), opacity var(--transicion-normal);
+}
+
+/* Cuando script.js agrega la clase "is-open" al hamburger (al
+   tocarlo), transformamos las 3 líneas en una "X":
+   - la línea del medio desaparece (opacity: 0)
+   - las líneas de arriba y abajo rotan 45° y se centran */
+.hamburger.is-open span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.is-open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.is-open span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+
+/* =====================================================================
+   6. HERO PRINCIPAL
+===================================================================== */
+
+.hero {
+    /* Ocupa toda la altura visible de la pantalla (100vh = 100% del
+       viewport height). Restamos la altura del header porque el
+       header está "flotando" encima con position: fixed. */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding-top: var(--alto-header);
+
+    /* --- IMAGEN DE FONDO + OVERLAY ---
+       Superponemos DOS "capas" de fondo con la propiedad
+       "background": primero el degradado semitransparente
+       (el overlay pedido en la consigna), y DEBAJO la foto
+       industrial real. El navegador dibuja la primera capa
+       de la lista arriba de todo, por eso el degradado va primero.
+
+       EDITAR AQUÍ: cambiá "assets/hero-industrial.jpg" por tu
+       propia foto. Mientras el archivo tenga ese mismo nombre y
+       esté en la carpeta assets/, no hace falta tocar nada más. */
+    background-image:
+        /* Capa 3 (arriba de todo): una textura sutil de puntos,
+           como una chapa perforada o un plano milimetrado. Es solo
+           decorativa y muy tenue (radial-gradient repetido cada
+           28px), para que el hero no se vea "plano" sobre la foto. */
+        radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(35, 74, 94, 0.78), rgba(47, 58, 69, 0.72)),
+        url('./assets/hero-industrial.jpg');
+    background-size: 28px 28px, cover, cover;
+    background-position: 0 0, center, center;
+    background-repeat: repeat, no-repeat, no-repeat;
+}
+
+/* Etiqueta pequeña arriba del título, con el acento cálido, tipo
+   "sello" o "certificación". Le da al hero un punto de color que
+   no es ni blanco ni azul, sin competir con el texto principal. */
+.hero__kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--fuente-titulos);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-blanco);
+    background-color: rgba(184, 121, 74, 0.22);
+    border: 1px solid rgba(184, 121, 74, 0.55);
+    padding: 8px 18px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+}
+
+.hero__kicker span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--color-ambar);
+    flex-shrink: 0;
+}
+
+.hero__content {
+    max-width: 800px;
+    padding: 0 24px;
+    /* Texto blanco puro porque va sobre un fondo oscuro (el overlay) */
+    color: var(--color-blanco);
+}
+
+.hero__title {
+    font-family: var(--fuente-titulos);
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw + 1rem, 3.4rem);
+    line-height: 1.15;
+    margin-bottom: 20px;
+}
+
+.hero__subtitle {
+    font-size: clamp(1rem, 1vw + 0.8rem, 1.2rem);
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: 0 auto 36px;
+}
+
+.hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+/* Indicador de scroll: una línea vertical con un puntito que
+   "rebota" gracias a una animación CSS (@keyframes más abajo). */
+.hero__scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.hero__scroll-indicator span {
+    position: absolute;
+    top: 0;
+    left: -3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-blanco);
+    animation: rebote-scroll 1.8s ease-in-out infinite;
+}
+
+@keyframes rebote-scroll {
+    0%   { top: 0; opacity: 1; }
+    100% { top: 42px; opacity: 0; }
+}
+
+
+/* =====================================================================
+   6-B. SEPARADOR "REGLA DE PRECISIÓN" (elemento distintivo)
+   ---------------------------------------------------------------
+   Una franja angosta que imita las marcas de un calibre o una
+   regla milimetrada: rayitas cortas en azul industrial cada 24px,
+   y una rayita más larga en ámbar cada 120px (como el "cero" de
+   una escala). Es un guiño visual a la "Alta Precisión" que
+   promete el hero, y de paso es el lugar donde metemos el color
+   cálido de forma más literal, sin que compita con el contenido.
+   Se logra apilando DOS "repeating-linear-gradient" en la misma
+   propiedad background-image (como superponer dos capas de dibujo).
+===================================================================== */
+.precision-divider {
+    height: 10px;
+    background-color: var(--color-fondo-principal);
+    background-image:
+        repeating-linear-gradient(
+            90deg,
+            var(--color-ambar) 0,
+            var(--color-ambar) 2px,
+            transparent 2px,
+            transparent 120px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            var(--color-azul-acero) 0,
+            var(--color-azul-acero) 1px,
+            transparent 1px,
+            transparent 24px
+        );
+    background-position: 0 0, 0 4px;
+    background-repeat: repeat-x;
+}
+
+
+/* =====================================================================
+   7. SECCIÓN "QUIÉNES SOMOS"
+===================================================================== */
+
+.about {
+    background-color: var(--color-fondo-principal);
+}
+
+.about__text {
+    max-width: 760px;
+    font-size: 1.05rem;
+    color: var(--color-gris-grafito);
+}
+
+
+/* =====================================================================
+   8. SECCIÓN "NUESTROS SERVICIOS" (tarjetas)
+===================================================================== */
+
+.services {
+    background-color: var(--color-fondo-secundario);
+}
+
+.services__grid {
+    display: grid;
+    /* auto-fit + minmax: el navegador calcula solo cuántas columnas
+       entran, repitiendo columnas de mínimo 260px. Es el equivalente
+       "automático" de andar escribiendo una media query distinta
+       para cada cantidad de columnas. */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+    margin-top: 40px;
+}
+
+.card {
+    background-color: var(--color-blanco);
+    border-radius: var(--radio-borde);
+    padding: 32px 28px;
+    /* Borde superior de 3px en azul industrial, como pide la
+       consigna, simulando una especie de "placa metálica". */
+    border-top: 3px solid var(--color-azul-industrial);
+    box-shadow: var(--sombra-suave);
+    transition: transform var(--transicion-normal), box-shadow var(--transicion-normal);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-media);
+}
+
+/* --- CHIP DE ÍCONO ---
+   Antes el ícono flotaba solo, sin fondo. Ahora vive dentro de
+   un círculo de color (un "chip"), lo que le da mucho más peso
+   visual y color a cada tarjeta sin necesidad de fotos.
+
+   Cada servicio tiene un tinte distinto y con sentido:
+   - Mecanizado  -> azul industrial (precisión, acero)
+   - Soldadura   -> ámbar/cobre (calor, chispa)
+   - Reparación  -> acento (recuperación, verde-azulado sobrio)
+   - Ingeniería  -> azul acero (planos, técnica)
+   - Montaje     -> grafito (estructura, ensamble)
+   Se agregan con una segunda clase, ej: "card__icon card__icon--ambar" */
+.card__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-azul-industrial);
+    background-color: var(--tinte-azul-industrial);
+    margin-bottom: 20px;
+    transition: transform var(--transicion-normal);
+}
+
+.card__icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.card:hover .card__icon {
+    transform: scale(1.08);
+}
+
+.card__icon--ambar {
+    color: var(--color-ambar);
+    background-color: var(--tinte-ambar);
+}
+
+.card__icon--acento {
+    color: var(--color-azul-acero);
+    background-color: var(--tinte-acento);
+}
+
+.card__icon--acero {
+    color: var(--color-azul-acero);
+    background-color: var(--tinte-azul-acero);
+}
+
+.card__icon--grafito {
+    color: var(--color-gris-grafito);
+    background-color: var(--tinte-grafito);
+}
+
+/* El borde superior de cada tarjeta también puede tomar el color
+   de su ícono, para reforzar la asociación visual (ver variantes
+   ".card--ambar", etc. usadas en el HTML). */
+.card--ambar {
+    border-top-color: var(--color-ambar);
+}
+
+.card--acero {
+    border-top-color: var(--color-azul-acero);
+}
+
+.card--grafito {
+    border-top-color: var(--color-gris-grafito);
+}
+
+.card__title {
+    font-family: var(--fuente-titulos);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--color-gris-grafito);
+}
+
+.card__text {
+    font-size: 0.95rem;
+    color: var(--color-azul-acero);
+}
+
+
+/* =====================================================================
+   8-B. SECCIÓN "TRABAJOS REALIZADOS" (galería con nombre)
+   ---------------------------------------------------------------
+   Cada <figure> es una "tarjeta de foto": una imagen que ocupa
+   todo el espacio, con el nombre del trabajo (<figcaption>)
+   superpuesto abajo sobre un degradado oscuro, para que el texto
+   blanco se lea bien sin importar qué tan clara sea la foto de
+   fondo (mismo truco del overlay del hero, pero en miniatura).
+===================================================================== */
+
+/*NUEVO*/
+.timeline-project {
+    display:none;
+}
+
+.timeline-project.active {
+    display:block;
+}
+
+
+.timeline-selector {
+    display:flex;
+    justify-content: center;
+    gap:15px;
+    margin-bottom:40px;
+}
+
+
+.timeline-btn {
+
+    padding:12px 25px;
+
+    border:none;
+    border-radius:8px;
+
+    background:#30343A;
+    color:white;
+
+    cursor:pointer;
+
+}
+
+
+.timeline-btn.active {
+
+    background:#B32025;
+
+}
+
+
+
+
+
+
+
+.timeline {
+    position:relative;
+}
+
+
+.timeline__item {
+
+    display:flex;
+    align-items:center;
+    gap:50px;
+
+    margin:80px 0;
+
+    position:relative;
+}
+
+
+
+.timeline__item--reverse {
+    flex-direction:row-reverse;
+}
+
+
+
+.timeline__image {
+
+    width:50%;
+}
+
+
+.timeline__image img {
+
+    width:100%;
+    height:350px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+}
+
+
+
+.timeline__content {
+
+    width:50%;
+}
+
+
+
+.timeline__content span {
+
+    display:inline-flex;
+
+    width:45px;
+    height:45px;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#B32025;
+    color:white;
+
+    font-weight:bold;
+}
+
+
+
+.timeline__content h3 {
+
+    color:#17191C;
+
+    margin-top:15px;
+}
+
+
+
+.timeline__content p {
+
+    color:#59636B;
+
+    line-height:1.6;
+}
+
+/*FIN NUEVO*/
+
+.gallery {
+    background-color: var(--color-fondo-principal);
+}
+
+.gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+    margin-top: 40px;
+}
+
+.gallery__item {
+    position: relative;
+    /* aspect-ratio fuerza una proporción 4:3 para TODAS las fotos,
+       aunque las imágenes originales tengan tamaños distintos. Así
+       la grilla queda prolija en vez de despareja. */
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radio-borde);
+    overflow: hidden; /* recorta la imagen a las esquinas redondeadas */
+    box-shadow: var(--sombra-suave);
+    background-color: var(--color-gris-acero-claro); /* se ve mientras carga la foto */
+    transition: box-shadow var(--transicion-normal);
+}
+
+.gallery__item:hover {
+    box-shadow: var(--sombra-media);
+}
+
+.gallery__item img {
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover recorta la imagen para que llene todo el
+       espacio sin deformarse (equivalente a un "crop" automático),
+       igual que hace background-size: cover en el hero. */
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Al pasar el mouse, la foto hace un leve "zoom" hacia adentro.
+   Es un efecto clásico de galerías: le da vida sin ser exagerado. */
+.gallery__item:hover img {
+    transform: scale(1.06);
+}
+
+.gallery__item figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 18px 16px 14px;
+    color: var(--color-blanco);
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    font-size: 0.95rem;
+    /* Degradado oscuro solo en la parte de abajo de la foto, para
+       que el nombre del trabajo tenga contraste sin necesidad de
+       oscurecer TODA la imagen (algunas fotos son claras, otras
+       oscuras, y este truco funciona para ambos casos). */
+    background: linear-gradient(
+        to top,
+        rgba(35, 74, 94, 0.88),
+        rgba(35, 74, 94, 0)
+    );
+}
+
+
+/* =====================================================================
+   9. SECCIÓN "CAPACIDADES INDUSTRIALES" (fondo azul oscuro)
+===================================================================== */
+
+.capabilities {
+    background-color: var(--color-azul-industrial);
+    text-align: left;
+}
+
+.capabilities__list {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.capabilities__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-blanco);
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    font-size: 1.02rem;
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radio-borde);
+}
+
+.capabilities__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-acento);
+    flex-shrink: 0; /* evita que el punto se aplaste si el texto es largo */
+}
+
+/* Cada 5to ítem (contando desde el final, ver HTML) usa el acento
+   cálido en vez del azul, para que la lista no se vea monocromática. */
+.capabilities__dot--ambar {
+    background-color: var(--color-ambar);
+}
+
+
+/* =====================================================================
+   10. SECCIÓN "POR QUÉ ELEGIRNOS"
+===================================================================== */
+
+.why-us {
+    background-color: var(--color-fondo-principal);
+}
+
+.why-us__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 32px;
+    margin-top: 40px;
+}
+
+.why-us__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-azul-industrial);
+    background-color: var(--tinte-azul-industrial);
+    margin-bottom: 16px;
+    transition: transform var(--transicion-normal);
+}
+
+.why-us__icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.why-us__item:hover .why-us__icon {
+    transform: scale(1.08);
+}
+
+/* Igual que en las tarjetas de servicios, alternamos tintes para
+   que los 4 bloques no se vean todos idénticos, y para que el
+   acento cálido (ámbar) aparezca también acá, con moderación. */
+.why-us__icon--ambar {
+    color: var(--color-ambar);
+    background-color: var(--tinte-ambar);
+}
+
+.why-us__icon--acero {
+    color: var(--color-azul-acero);
+    background-color: var(--tinte-azul-acero);
+}
+
+.why-us__icon--acento {
+    color: var(--color-azul-acero);
+    background-color: var(--tinte-acento);
+}
+
+.why-us__title {
+    font-family: var(--fuente-titulos);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.why-us__text {
+    font-size: 0.92rem;
+    color: var(--color-azul-acero);
+}
+
+
+/* =====================================================================
+   11. LLAMADO A LA ACCIÓN (CTA)
+===================================================================== */
+
+.cta {
+    background-color: var(--color-gris-grafito);
+    color: var(--color-blanco);
+    text-align: center;
+}
+
+.cta__container {
+    max-width: 640px;
+}
+
+.cta__title {
+    font-family: var(--fuente-titulos);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw + 1rem, 2.1rem);
+    margin-bottom: 16px;
+}
+
+.cta__text {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 32px;
+}
+
+
+/* =====================================================================
+   12. SECCIÓN DE CONTACTO
+===================================================================== */
+
+.contact {
+    background-color: var(--color-fondo-secundario);
+}
+
+.contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.contact__list {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact__list li {
+    font-size: 0.98rem;
+}
+
+.contact__list strong {
+    display: block;
+    color: var(--color-azul-industrial);
+    font-family: var(--fuente-titulos);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+}
+
+.contact__list a:hover {
+    text-decoration: underline;
+}
+
+/* --- FORMULARIO --- */
+
+.contact__form {
+    background-color: var(--color-blanco);
+    padding: 36px;
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra-suave);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Esta clase hace que un campo ocupe las DOS columnas del grid
+   (útil para el textarea de "Descripción del trabajo", que
+   necesita más ancho). */
+.form__group--full {
+    grid-column: 1 / -1;
+}
+
+.form__group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gris-grafito);
+}
+
+.form__group input,
+.form__group select,
+.form__group textarea {
+    font-family: var(--fuente-textos);
+    font-size: 0.95rem;
+    padding: 12px 14px;
+    border: 1px solid var(--color-gris-acero-claro);
+    border-radius: 8px;
+    background-color: var(--color-fondo-principal);
+    color: var(--color-gris-grafito);
+    transition: border-color var(--transicion-rapida);
+}
+
+.form__group textarea {
+    resize: vertical; /* el usuario puede agrandarlo verticalmente, no horizontalmente */
+}
+
+.form__group input:focus,
+.form__group select:focus,
+.form__group textarea:focus {
+    border-color: var(--color-azul-industrial);
+}
+
+/* Mensaje de error de validación (oculto hasta que script.js le
+   agregue texto y la clase "is-visible"). */
+.form__error {
+    font-size: 0.8rem;
+    color: #A33B3B; /* un rojo apagado, NO saturado, solo para errores puntuales */
+    min-height: 1em;
+    display: none;
+}
+
+.form__error.is-visible {
+    display: block;
+}
+
+/* Si el campo tiene error, le agregamos un borde rojo apagado
+   para reforzar visualmente dónde está el problema. */
+.form__group input.is-invalid,
+.form__group select.is-invalid,
+.form__group textarea.is-invalid {
+    border-color: #A33B3B;
+}
+
+.form__success {
+    display: none;
+    grid-column: 1 / -1;
+    background-color: #E6EEE9;
+    color: #2F5D45;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.form__success.is-visible {
+    display: block;
+}
+
+.form__submit {
+    grid-column: 1 / -1;
+    justify-self: start;
+}
+
+
+/* =====================================================================
+   13. FOOTER
+===================================================================== */
+
+.footer {
+    background-color: var(--color-gris-grafito);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 64px 0 0;
+}
+
+.footer__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer__brand h3 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-blanco);
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+}
+
+.footer__contact p {
+    margin-bottom: 6px;
+    font-size: 0.92rem;
+}
+
+.footer__contact a:hover {
+    text-decoration: underline;
+}
+
+.footer__bottom {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* =====================================================================
+   14. BOTÓN FLOTANTE DE WHATSAPP
+===================================================================== */
+
+.whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 58px;
+    height: 58px;
+    background-color: var(--color-azul-industrial);
+    color: var(--color-blanco);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--sombra-media);
+    z-index: 900;
+    transition: transform var(--transicion-normal), background-color var(--transicion-normal);
+}
+
+.whatsapp-float svg {
+    width: 28px;
+    height: 28px;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.08);
+    background-color: var(--color-azul-hover);
+}
+
+
+/* =====================================================================
+   15. ANIMACIÓN DE APARICIÓN AL HACER SCROLL
+   script.js le agrega la clase "is-visible" a cada elemento con
+   la clase "reveal" cuando ese elemento entra en pantalla (usando
+   IntersectionObserver). Acá solo definimos CÓMO se ve el "antes"
+   y el "después" de esa transición.
+===================================================================== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Respeto a "reduced motion" ---
+   Algunas personas configuran su sistema operativo para reducir
+   animaciones (por mareos, epilepsia fotosensible, etc). Esta
+   media query detecta esa preferencia y desactiva las animaciones
+   para ellas, mostrando el contenido directamente. */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .hero__scroll-indicator span {
+        animation: none;
+    }
+}
+
+
+/* =========================================================
+   MODELOS 3D
+========================================================= */
+
+.models3d {
+    padding: 90px 0;
+    background: #f4f6f8;
+}
+
+
+.models3d__intro {
+    max-width: 800px;
+    margin: 0 auto 50px;
+    text-align: center;
+}
+
+
+.models3d__grid {
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+
+}
+
+
+
+.model-card {
+
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+
+
+.model-card model-viewer {
+
+    width:100%;
+    height:350px;
+    background:#e9edf1;
+
+}
+
+
+
+.model-card__info {
+
+    padding:25px;
+
+}
+
+
+.model-card__info h3 {
+
+    margin-bottom:10px;
+
+}
+/* =====================================================================
+   16. RESPONSIVE DESIGN
+   Cada "@media" es como un "if" que solo se cumple si el ancho de
+   pantalla entra en cierto rango. El navegador los evalúa de
+   arriba hacia abajo, así que ordenamos de pantallas grandes a
+   chicas. Pensalo como distintos "casos de configuración" según
+   el tamaño de pantalla, igual que adaptarías un mismo programa
+   en C a distintos tamaños de buffer.
+===================================================================== */
+
+/* --- LAPTOP (hasta 1024px de ancho) --- */
+@media (max-width: 1024px) {
+    .contact__grid {
+        /* En pantallas más chicas, el formulario deja de competir
+           por espacio con la columna de datos y pasan a apilarse
+           una arriba de la otra. */
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- TABLET (hasta 768px de ancho) ---
+   Acá es donde el menú de escritorio se convierte en menú
+   hamburguesa. */
+@media (max-width: 768px) {
+
+    .hamburger {
+        display: flex; /* ahora sí se muestra el botón hamburguesa */
+    }
+
+    .nav {
+        /* El <nav> pasa de estar en fila (flex-direction row, el
+           default) a ser un panel vertical que cuelga debajo del
+           header, ocupando todo el ancho de la pantalla. */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        background-color: var(--color-blanco);
+        box-shadow: var(--sombra-media);
+
+        /* Antes de abrirse, el menú está "recogido": altura 0 y
+           overflow oculto, como si estuviera enrollado. script.js
+           solo agrega/quita la clase "is-open"; el CSS se encarga
+           de animar la transición entre estos dos estados. */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transicion-normal);
+    }
+
+    .nav.is-open {
+        /* Un valor de max-height generoso, más grande que el
+           contenido real, para que la transición tenga "hacia
+           dónde" crecer. */
+        max-height: 400px;
+    }
+
+    .nav__link {
+        width: 100%;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--color-gris-acero-claro);
+    }
+
+    .nav__whatsapp {
+        margin: 16px 24px;
+    }
+
+    .services__grid,
+    .why-us__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact__form {
+        grid-template-columns: 1fr; /* un solo campo por fila */
+        padding: 28px 24px;
+    }
+
+    .form__group--full {
+        grid-column: 1;
+    }
+
+    section {
+        padding: 64px 0;
+    }
+}
+
+/* --- MOBILE (360px en adelante, celulares chicos) --- */
+@media (max-width: 480px) {
+
+    .header__container {
+        padding: 0 16px;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    .hero__buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero__buttons .btn {
+        width: 100%;
+    }
+
+    .whatsapp-float {
+        width: 52px;
+        height: 52px;
+        bottom: 16px;
+        right: 16px;
+    }
+}

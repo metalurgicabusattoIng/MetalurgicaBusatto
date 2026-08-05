@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<!--
+=====================================================================
+  METALÚRGICA BUSATTO — index.html
+  ---------------------------------------------------------------
+  Este es el ÚNICO archivo HTML del sitio (una sola página con
+  varias "secciones", como si cada <section> fuera un módulo
+  distinto dentro de un mismo programa).
+
+  Si venís de C, pensalo así:
+    - index.html   = main.c        (la estructura / el flujo)
+    - style.css    = "constantes" y "layout" (cómo se ve todo)
+    - script.js    = las "funciones" que reaccionan a eventos
+                      (clicks, scroll, resize, etc.)
+
+  Para editar textos, imágenes o enlaces, buscá los comentarios
+  en MAYÚSCULA tipo "EDITAR AQUÍ" repartidos por el archivo.
+=====================================================================
+-->
+<html lang="es">
+<head>
+    <!-- ================================================
+         META TAGS
+         Son "cabeceras de configuración" del documento.
+         No se ven en pantalla, pero el navegador y Google
+         las leen para saber cómo mostrar/entender la página.
+    ================================================= -->
+
+    <!-- Define el set de caracteres. Con esto los acentos (á, é, ñ)
+         se muestran bien. Sin esto podrías ver símbolos raros. -->
+    <meta charset="UTF-8">
+
+    <!-- Le dice al navegador de celular que use el ancho real
+         de la pantalla y no simule un ancho de escritorio.
+         Es LA línea que hace que un sitio sea "responsive". -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Descripción que Google muestra en los resultados de búsqueda.
+         Es como un "comentario de resumen" del archivo, pero pensado
+         para un buscador, no para otro programador. -->
+    <meta name="description" content="Metalúrgica Busatto - Mecanizado pesado, soldadura, reparación, ingeniería y montaje industrial.">
+
+    <!-- Palabras clave relacionadas al rubro. Hoy Google les da poco
+         peso, pero no está de más incluirlas. -->
+    <meta name="keywords" content="mecanizado pesado, soldadura industrial, reparación industrial, ingeniería mecánica, montaje industrial, metalúrgica Busatto">
+
+    <!-- Título que aparece en la pestaña del navegador y en Google. -->
+    <title>Metalúrgica Busatto | Mecanizado Pesado y Soluciones Industriales</title>
+
+    <!-- Ícono chiquito que aparece en la pestaña del navegador.
+         Si no tenés uno todavía, el navegador simplemente no
+         muestra nada; no rompe la página. Podés reemplazar
+         "assets/favicon.png" por tu propio ícono más adelante. -->
+    <link rel="icon" type="image/png" href="./assets/Logo.png">
+
+    <!-- ================================================
+         TIPOGRAFÍAS (Google Fonts)
+         "preconnect" adelanta la conexión al servidor de
+         fuentes para que carguen más rápido (como hacer un
+         "malloc" anticipado antes de necesitarlo).
+
+         Usamos DOS familias tipográficas con roles distintos:
+         - Montserrat: para TÍTULOS (más robusta, tipo "acero")
+         - Inter: para TEXTOS (más liviana, muy legible en párrafos)
+         Mezclar una fuente "de carácter" con una "de lectura" es
+         una práctica estándar en diseño: separa la función de
+         "gritar el título" de la función de "leerse cómodo".
+    ================================================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Visor de modelos 3D -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+    <!-- Nuestra hoja de estilos. Ruta relativa: "./" significa
+         "en esta misma carpeta". Así funciona igual en tu compu
+         y en GitHub Pages. -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <!-- =========================================================
+         HEADER FIJO (BARRA SUPERIOR)
+         "Fijo" significa que queda pegado arriba aunque el
+         usuario haga scroll. Eso se controla en CSS con
+         position: fixed (lo vas a ver en style.css).
+
+         Contiene: logo, menú de navegación y botón de WhatsApp.
+
+         EDITAR AQUÍ: el texto del logo y los links del menú.
+    ========================================================== -->
+    <header class="header" id="header">
+        <div class="header__container">
+
+          <a href="#inicio" class="header__logo" aria-label="Metalúrgica Busatto - Inicio">
+         <img src="assets/Logo.png" alt="Metalúrgica Busatto" class="header__logo-img">
+        </a>
+
+            <!-- ============================================
+                 MENÚ DE NAVEGACIÓN (versión escritorio)
+                 En pantallas chicas, este mismo <nav> se
+                 transforma visualmente en un menú desplegable
+                 gracias a CSS + la clase "is-open" que agrega
+                 script.js cuando tocás el botón hamburguesa.
+
+                 Pensalo como un "switch" en C:
+                   switch(pantalla) {
+                     case GRANDE: mostrar en fila;
+                     case CHICA:  mostrar como lista vertical
+                                  solo si menu_abierto == true;
+                   }
+            ============================================= -->
+            <nav class="nav" id="nav">
+
+                <a href="#inicio" class="nav__link">Inicio</a>
+                <a href="#servicios" class="nav__link">Servicios</a>
+                <a href="#trabajos" class="nav__link">Trabajos</a>
+                <a href="#nosotros" class="nav__link">Nosotros</a>
+                <a href="#modelos" class="nav__link">Modelos 3D</a>
+                <a href="#capacidades" class="nav__link">Capacidades</a>
+                <a href="#contacto" class="nav__link">Contacto</a>
+
+                <!-- Botón de WhatsApp destacado, visible también dentro
+                     del menú mobile cuando está desplegado. -->
+                <a href="https://wa.me/5493456252135"
+                   class="nav__whatsapp"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Contactar por WhatsApp">
+                    WhatsApp
+                </a>
+            </nav>
+
+            <!-- ============================================
+                 BOTÓN HAMBURGUESA (solo visible en mobile)
+                 Son 3 líneas (<span>) que script.js transforma
+                 en una "X" con CSS cuando el menú está abierto.
+
+                 aria-expanded le dice a lectores de pantalla si
+                 el menú está abierto (true) o cerrado (false).
+                 script.js actualiza este atributo dinámicamente.
+            ============================================= -->
+            <button class="hamburger"
+                    id="hamburger"
+                    aria-label="Abrir menú de navegación"
+                    aria-expanded="false"
+                    aria-controls="nav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================================
+         HERO PRINCIPAL
+         Es la primera sección grande que ve el usuario.
+         Tiene una imagen de fondo con un "overlay" (una capa de
+         color semitransparente encima) para que el texto blanco
+         se lea bien sobre la foto industrial.
+
+         EDITAR AQUÍ: título, subtítulo y la imagen de fondo
+         (se define en style.css, buscá ".hero").
+    ========================================================== -->
+    <section class="hero" id="inicio">
+        <!-- Contenido centrado del hero -->
+        <div class="hero__content">
+            <!-- Etiqueta pequeña con acento cálido, solo decorativa/
+                 informativa (no es un link ni un botón). -->
+            <span class="hero__kicker"><span aria-hidden="true"></span>Mecanizado Pesado · Ingenieria · Reparación</span>
+            <h1 class="hero__title">Soluciones Industriales de Alta Precisión</h1>
+            <p class="hero__subtitle">
+                Mecanizado pesado, soldadura, reparación, ingeniería y montaje
+                industrial para equipos y componentes de gran porte.
+            </p>
+
+            <!-- Grupo de botones de acción principal -->
+            <div class="hero__buttons">
+                <a href="#contacto" class="btn btn--primary">Solicitar Presupuesto</a>
+                <a href="https://wa.me/5493456252135"
+                   class="btn btn--secondary"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Contactar por WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- Flechita animada que invita a bajar. Es decorativa:
+             aria-hidden="true" le indica a lectores de pantalla
+             que la ignoren, porque no aporta información. -->
+        <div class="hero__scroll-indicator" aria-hidden="true">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         SEPARADOR "REGLA DE PRECISIÓN"
+         Franja angosta decorativa que imita las marcas de un
+         calibre/regla milimetrada. Es puramente visual (por eso
+         aria-hidden="true"), un guiño a la "Alta Precisión" del
+         hero y el único lugar donde el color ámbar aparece de
+         forma literal como una línea. Podés borrar este <div> sin
+         que se rompa nada más del sitio.
+    ========================================================== -->
+    <div class="precision-divider" aria-hidden="true"></div>
+
+    <!-- =========================================================
+         SECCIÓN "QUIÉNES SOMOS"
+         Bloque de texto institucional. Simple: un título y un
+         párrafo. No necesita JavaScript.
+    ========================================================== -->
+    <section class="about" id="nosotros">
+        <div class="container">
+            <span class="eyebrow">Quiénes Somos</span>
+            <h2 class="section-title">Experiencia técnica al servicio de la industria</h2>
+            <p class="about__text">
+                Metalúrgica Busatto es una empresa especializada en mecanizado
+                pesado, soldadura industrial, relleno y reparación de
+                componentes, diseño e ingeniería y montaje industrial.
+                Brindamos soluciones integrales para la industria combinando
+                experiencia técnica, precisión y compromiso con la calidad.
+            </p>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         SECCIÓN "NUESTROS SERVICIOS"
+         5 tarjetas (cards). Cada tarjeta es un bloque idéntico
+         en estructura (como una "struct Servicio" repetida 5
+         veces con distintos valores).
+
+         Los íconos son SVG "inline" (el código del dibujo está
+         directamente en el HTML). Ventaja: no son archivos de
+         imagen aparte, cargan instantáneo y se les puede cambiar
+         el color por CSS (currentColor).
+
+         EDITAR AQUÍ: podés agregar/quitar tarjetas copiando el
+         bloque completo de una <article class="card">.
+    ========================================================== -->
+    <section class="services" id="servicios">
+        <div class="container">
+            <span class="eyebrow">Nuestros Servicios</span>
+            <h2 class="section-title">Capacidades que respaldan cada proyecto</h2>
+
+            <div class="services__grid">
+
+                <!-- TARJETA 1: Mecanizado Pesado — tinte azul industrial (acero/precisión) -->
+                <article class="card">
+                    <h3 class="card__title">Mecanizado Pesado</h3>
+                    <p class="card__text">
+                        Fabricación y mecanizado de piezas de grandes dimensiones
+                        con alta precisión.
+                    </p>
+                </article>
+
+                <!-- TARJETA 2: Soldadura Industrial — tinte ámbar/cobre (calor y chispa) -->
+                <article class="card card--ambar">
+                    
+                    <h3 class="card__title">Soldadura Industrial</h3>
+                    <p class="card__text">
+                        Soldadura de estructuras, equipos y componentes
+                        industriales.
+                    </p>
+                </article>
+
+                <!-- TARJETA 3: Relleno y Reparación — tinte acento (recuperación) -->
+                <article class="card">
+                    
+                    <h3 class="card__title">Relleno y Reparación</h3>
+                    <p class="card__text">
+                        Recuperación dimensional y reparación de piezas
+                        desgastadas.
+                    </p>
+                </article>
+
+                <!-- TARJETA 4: Diseño e Ingeniería — tinte azul acero (planos, técnica) -->
+                <article class="card card--acero">
+                    
+                    <h3 class="card__title">Diseño e Ingeniería</h3>
+                    <p class="card__text">
+                        Planos, modelado CAD y desarrollo de soluciones
+                        mecánicas industriales.
+                    </p>
+                </article>
+
+                
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         SECCIÓN "TRABAJOS REALIZADOS"
+         Galería de fotos de proyectos ya entregados, cada una con
+         su NOMBRE debajo (el título del trabajo). Es la sección
+         que le da "prueba" a todo lo que se promete en Servicios:
+         no alcanza con decir "hacemos mecanizado pesado", hay que
+         mostrarlo.
+
+         Cada foto es un <figure>: la etiqueta HTML pensada
+         justamente para "una imagen + su leyenda". El nombre del
+         trabajo va en <figcaption>, que es semánticamente correcto
+         y además ayuda a la accesibilidad (un lector de pantalla
+         anuncia la leyenda como descripción de la imagen).
+
+         EDITAR AQUÍ (para agregar/quitar trabajos):
+         Copiá un bloque completo <figure class="gallery__item"> y
+         cambiá:
+           1. El "src" de la imagen (poné tu foto en assets/ con
+              ese nombre, ver assets/LEEME-IMAGENES.txt).
+           2. El texto del <figcaption> (el nombre del trabajo).
+           3. El "alt" de la imagen (una descripción corta para
+              quienes no pueden ver la foto).
+         El diseño en grilla se acomoda solo, no importa si hay
+         4, 6 u 8 trabajos.
+    ========================================================== -->
+    <section class="gallery" id="trabajos">
+        <div class="container">
+            <span class="eyebrow">Trabajos Realizados</span>
+            <h2 class="section-title">Proyectos entregados que respaldan cada servicio</h2>
+
+            <div class="gallery__grid">
+
+                <!-- TRABAJO 1 -->
+                <figure class="gallery__item">
+                    <img src="./assets/trabajo-01-reductor-velocidad.jpg"
+                         alt="Reductor de velocidad industrial mecanizado y ensamblado">
+                    <figcaption>Reductor de Velocidad Industrial</figcaption>
+                </figure>
+
+                <!-- TRABAJO 2 -->
+                <figure class="gallery__item">
+                    <img src="./assets/trabajo-02-estructura-metalica.jpg"
+                         alt="Estructura metálica soldada para planta industrial">
+                    <figcaption>Estructura Metálica para Planta</figcaption>
+                </figure>
+
+                <!-- TRABAJO 3 -->
+                <figure class="gallery__item">
+                    <img src="./assets/trabajo-03-eje-cardanico.jpg"
+                         alt="Eje cardánico reparado y rectificado">
+                    <figcaption>Eje Cardánico Reparado</figcaption>
+                </figure>
+
+                <!-- TRABAJO 4 -->
+                <figure class="gallery__item">
+                    <img src="./assets/trabajo-04-skid-bombeo.jpg"
+                         alt="Skid de bombeo montado con cañerías y estructura soporte">
+                    <figcaption>Skid de Bombeo Montado</figcaption>
+                </figure>
+
+                <!-- TRABAJO 5 -->
+                <figure class="gallery__item">
+                    <img src="./assets/trabajo-05-tanque-proceso.jpg"
+                         alt="Tanque de proceso soldado en taller">
+                    <figcaption>Tanque de Proceso Soldado</figcaption>
+                </figure>
+
+                <!-- TRABAJO 6 -->
+                <figure class="gallery__item">
+                    <img src="./assets/trabajo-06-bancada-cnc.jpg"
+                         alt="Bancada mecanizada con control numérico">
+                    <figcaption>Bancada Mecanizada CNC</figcaption>
+                </figure>
+
+            </div>
+        </div>
+    </section>
+
+<!--LINEA DE TIEMPO-->
+
+   
+
+    <div class="container">
+                <section class="timeline" id="trabajos">
+
+                        <div class="timeline-selector">
+
+                                <button class="timeline-btn active" data-target="trabajo1">
+                                    Primaria FACO
+                                </button>
+
+                                <button class="timeline-btn" data-target="trabajo2">
+                                    Cono Telsmith
+                                </button>
+
+                                <button class="timeline-btn" data-target="trabajo3">
+                                    Reductor
+                                </button>
+
+                        </div>
+
+
+
+
+                
+                    <div class="timeline-project active" id="trabajo1">
+                        <span class="eyebrow">Proceso de reparación</span>
+
+                        <h2 class="section-title">
+                            Del desgaste a una nueva vida útil
+                        </h2>
+
+
+                        <div class="timeline__item">
+
+                            <div class="timeline__image">
+                                <img src="./assets/Trabajos/RecepcionAlesadora.png"
+                                alt="Equipo recibido para reparación">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>01</span>
+                                <h3>Recepción y diagnóstico</h3>
+                                <p>
+                                Evaluación inicial del componente,
+                                identificación de desgaste y planificación
+                                de reparación.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="timeline__item timeline__item--reverse">
+
+                            <div class="timeline__image">
+                                <img src="./assets/Trabajos/ProcesoAlesadora.jpeg"
+                                alt="Proceso de mecanizado">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>02</span>
+                                <h3>Recuperación industrial</h3>
+                                <p>
+                                Mecanizado pesado, soldadura,
+                                rectificado y control dimensional.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="timeline__item">
+
+                            <div class="timeline__image">
+                                <img src="./assets/Trabajos/FinalAlesadora.jpeg"
+                                alt="Equipo terminado">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>03</span>
+                                <h3>Entrega final</h3>
+                                <p>
+                                Equipo recuperado listo para volver
+                                a producción.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!--TRABAJO 2-->
+                    <div class="timeline-project" id="trabajo2">
+                        <span class="eyebrow">Proceso de reparación</span>
+
+                        <h2 class="section-title">
+                            Del desgaste a una nueva vida útil
+                        </h2>
+
+
+                        <div class="timeline__item">
+
+                            <div class="timeline__image">
+                                <img src="./assets/Trabajos/RecepcionCono.jpg"
+                                alt="Equipo recibido para reparación">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>01</span>
+                                <h3>Recepción</h3>
+                                <p>
+                                Evaluación inicial del componente,
+                                identificación de desgaste y planificación
+                                de reparación.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="timeline__item timeline__item--reverse">
+
+                            <div class="timeline__image">
+                                <img src="./assets/Trabajos/Modelado3dCono.png"
+                                alt="Proceso de mecanizado">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>02</span>
+                                <h3>Modelado 3D</h3>
+                                <p>
+                                Equipo recuperado listo para volver
+                                a producción.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="timeline__item">
+
+                            <div class="timeline__image">
+                                <img src="./assets/Trabajos/RoscaCono.jpg"
+                                alt="Equipo terminado">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>03</span>
+                                
+                                <h3>Recuperación industrial</h3>
+                                <p>
+                                Mecanizado pesado, soldadura,
+                                rectificado y control dimensional.
+                                </p>
+                            </div>
+
+                        </div>
+
+                         <div class="timeline__item timeline__item--reverse">
+
+                            <div class="timeline__image">
+                                <img src="./assets/Trabajos/FinalCono.jpg"
+                                alt="Equipo recibido para reparación">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>04</span>
+                                <h3>Entrega final</h3>
+                                <p>
+                                Equipo recuperado listo para volver
+                                a producción.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                     <!--TRABAJO 3-->
+                    <div class="timeline-project" id="trabajo3">
+                        <span class="eyebrow">Proceso de reparación</span>
+
+                        <h2 class="section-title">
+                            Del desgaste a una nueva vida útil
+                        </h2>
+
+
+                        <div class="timeline__item">
+
+                            <div class="timeline__image">
+                                <img src="./assets/antes.jpg"
+                                alt="Equipo recibido para reparación">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>01</span>
+                                <h3>Recepción</h3>
+                                <p>
+                                Evaluación inicial del componente,
+                                identificación de desgaste y planificación
+                                de reparación.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="timeline__item timeline__item--reverse">
+
+                            <div class="timeline__image">
+                                <img src="./assets/proceso.jpg"
+                                alt="Proceso de mecanizado">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>02</span>
+                                <h3>Recuperación industrial</h3>
+                                <p>
+                                Mecanizado pesado, soldadura,
+                                rectificado y control dimensional.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="timeline__item">
+
+                            <div class="timeline__image">
+                                <img src="./assets/final.jpg"
+                                alt="Equipo terminado">
+                            </div>
+
+                            <div class="timeline__content">
+                                <span>03</span>
+                                <h3>Entrega final</h3>
+                                <p>
+                                Equipo recuperado listo para volver
+                                a producción.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+        </div>
+
+    </section>  
+
+<!-- =========================================================
+     SECCIÓN "MODELOS 3D"
+     Visualización interactiva de componentes industriales.
+     
+     Los modelos deben estar en formato .glb.
+     Ejemplo:
+     ./assets/modelos/rotor-impactor.glb
+========================================================= -->
+
+<section class="models3d" id="modelos">
+    <div class="container">
+
+        <span class="eyebrow">Ingeniería Digital</span>
+
+        <h2 class="section-title">
+            Modelos 3D de componentes industriales
+        </h2>
+
+        <p class="models3d__intro">
+            Visualice diseños y componentes industriales desarrollados
+            por Metalúrgica Busatto mediante modelos tridimensionales
+            interactivos.
+        </p>
+
+
+        <div class="models3d__grid">
+
+
+            <!-- MODELO 1 -->
+            <article class="model-card">
+
+                <model-viewer
+                    src="./assets/modelos/FC48.glb"
+                    alt="Rotor de impactor industrial"
+                    camera-controls
+                    auto-rotate
+                    shadow-intensity="1">
+                </model-viewer>
+
+
+                <div class="model-card__info">
+
+                    <h3>
+                        Cono Telsmith FC48
+                    </h3>
+
+                    <p>
+                        Diseño y reparación de componentes
+                        para equipos de trituración.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- MODELO 2 -->
+            <article class="model-card">
+
+                <model-viewer
+                    src="./assets/modelos/Vibroalimentador.glb"
+                    alt="Eje industrial mecanizado"
+                    camera-controls
+                    auto-rotate
+                    shadow-intensity="1">
+                </model-viewer>
+
+
+                <div class="model-card__info">
+
+                    <h3>
+                        Vibroalimentador Zaranda
+                    </h3>
+
+                    <p>
+                        Componente de zaranda reparado y relevado para fabricación
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- MODELO 3 -->
+            <article class="model-card">
+
+                <model-viewer
+                    src="./assets/modelos/Rotativa.glb"
+                    alt="Polea industrial"
+                    camera-controls
+                    auto-rotate
+                    shadow-intensity="1">
+                </model-viewer>
+
+
+                <div class="model-card__info">
+
+                    <h3>
+                        Valvula Rotativa D=1000
+                    </h3>
+
+                    <p>
+                        Relevamiento para fabricacion de piezas de valvula rotativa
+                    </p>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </div>
+</section>
+
+    <!-- =========================================================
+         SECCIÓN "CAPACIDADES INDUSTRIALES"
+         Fondo azul industrial oscuro, con una lista de 5
+         indicadores destacados. Es una sección "de refuerzo":
+         no da información nueva, reafirma con otro tono visual.
+    ========================================================== -->
+    <section class="capabilities" id="capacidades">
+        <div class="container">
+            <span class="eyebrow eyebrow--light">Capacidades Industriales</span>
+            <h2 class="section-title section-title--light">
+                Infraestructura y experiencia para proyectos exigentes
+            </h2>
+
+            <ul class="capabilities__list">
+                <li class="capabilities__item">
+                    <span class="capabilities__dot" aria-hidden="true"></span>
+                    Trabajos de gran porte
+                </li>
+                <li class="capabilities__item">
+                    <span class="capabilities__dot" aria-hidden="true"></span>
+                    Reparación industrial
+                </li>
+                <li class="capabilities__item">
+                    <span class="capabilities__dot" aria-hidden="true"></span>
+                    Ingeniería aplicada
+                </li>
+                <li class="capabilities__item">
+                    <span class="capabilities__dot" aria-hidden="true"></span>
+                    Montaje y asistencia técnica
+                </li>
+                <li class="capabilities__item">
+                    <span class="capabilities__dot capabilities__dot--ambar" aria-hidden="true"></span>
+                    Soluciones integrales para la industria
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         SECCIÓN "POR QUÉ ELEGIRNOS"
+         4 bloques con ícono + título + texto corto, en grid.
+    ========================================================== -->
+    <section class="why-us">
+        <div class="container">
+            <span class="eyebrow">Por Qué Elegirnos</span>
+            <h2 class="section-title">Cuatro razones para confiarnos su proyecto</h2>
+
+            <div class="why-us__grid">
+
+                <!-- BLOQUE 1 -->
+                <div class="why-us__item">
+                    <div class="why-us__icon" aria-hidden="true">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 4l13 5v9c0 9-6 15-13 18-7-3-13-9-13-18v-9l13-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M14 20l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="why-us__title">Precisión y Calidad</h3>
+                    <p class="why-us__text">
+                        Cada pieza y cada proceso se controlan con criterios
+                        técnicos estrictos, sin lugar para la improvisación.
+                    </p>
+                </div>
+
+                <!-- BLOQUE 2 -->
+                <div class="why-us__item">
+                    <div class="why-us__icon why-us__icon--ambar" aria-hidden="true">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="15" stroke="currentColor" stroke-width="2"/>
+                            <path d="M20 11v9l6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="why-us__title">Experiencia Técnica</h3>
+                    <p class="why-us__text">
+                        Años de trabajo con equipos y componentes de gran
+                        porte respaldan cada solución que entregamos.
+                    </p>
+                </div>
+
+                <!-- BLOQUE 3 -->
+                <div class="why-us__item">
+                    <div class="why-us__icon why-us__icon--acero" aria-hidden="true">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="9" width="28" height="22" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M6 15h28" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 21h6M12 26h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="why-us__title">Soluciones Integrales</h3>
+                    <p class="why-us__text">
+                        Desde el diseño hasta el montaje final, acompañamos
+                        todo el proceso bajo un mismo equipo de trabajo.
+                    </p>
+                </div>
+
+                <!-- BLOQUE 4 -->
+                <div class="why-us__item">
+                    <div class="why-us__icon why-us__icon--acento" aria-hidden="true">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 35s12-7 12-17V9l-12-4-12 4v9c0 10 12 17 12 17z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M20 15v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="25" r="1.4" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="why-us__title">Compromiso con el Cliente</h3>
+                    <p class="why-us__text">
+                        Comunicación clara y plazos cumplidos, para que cada
+                        proyecto avance con tranquilidad y previsibilidad.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         LLAMADO A LA ACCIÓN (CTA)
+         Sección corta y directa antes del formulario, para
+         "empujar" al usuario a dar el siguiente paso.
+    ========================================================== -->
+    <section class="cta">
+        <div class="container cta__container">
+            <h2 class="cta__title">¿Necesita una solución metalúrgica confiable?</h2>
+            <p class="cta__text">
+                Fabricamos, reparamos, diseñamos y montamos componentes
+                industriales de gran porte con el respaldo técnico de
+                Metalúrgica Busatto.
+            </p>
+            <a href="#contacto" class="btn btn--ambar">Solicitar Asesoramiento Técnico</a>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         SECCIÓN DE CONTACTO
+         Dos columnas: datos de contacto (izquierda) y formulario
+         (derecha). El formulario NO usa un servidor propio: al
+         enviarse, arma un link "mailto:" con los datos cargados
+         y abre el cliente de correo del usuario. Ideal para
+         GitHub Pages, que no tiene backend.
+
+         EDITAR AQUÍ (destinatario del formulario):
+         El email al que se envía está definido en script.js,
+         en la constante EMAIL_DESTINO. Buscá ese comentario allá
+         para cambiarlo.
+    ========================================================== -->
+    <section class="contact" id="contacto">
+        <div class="container contact__grid">
+
+            <!-- Columna de datos de contacto -->
+            <div class="contact__info">
+                <span class="eyebrow">Contacto</span>
+                <h2 class="section-title">Hablemos de su proyecto</h2>
+
+                <ul class="contact__list">
+                    <li>
+                        <strong>WhatsApp:</strong>
+                        <a href="https://wa.me/5493456252135" target="_blank" rel="noopener noreferrer">
+                            +54 9 3456 25-2135
+                        </a>
+                    </li>
+                    <li>
+                        <strong>Email comercial:</strong>
+                        <a href="mailto:metalurgicabusatto@gmail.com">metalurgicabusatto@gmail.com</a>
+                    </li>
+                    <li>
+                        <strong>Email técnico:</strong>
+                        <a href="mailto:metalurgicabusatto.ing@gmail.com">metalurgicabusatto.ing@gmail.com</a>
+                    </li>
+                    <li>
+                        <strong>Horario de atención:</strong>
+                        Lunes a Viernes, 07:00 a 12:00 y 12:30 a 18:00
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ============================================
+                 FORMULARIO DE CONTACTO
+                 "novalidate" desactiva la validación nativa del
+                 navegador porque hacemos NUESTRA propia
+                 validación en script.js (para poder mostrar
+                 mensajes de error personalizados).
+
+                 Cada <label for="X"> está unido a su <input id="X">.
+                 Esto es clave para accesibilidad: un lector de
+                 pantalla anuncia "Nombre, campo de texto" en vez
+                 de simplemente "campo de texto".
+            ============================================= -->
+            <form class="contact__form" id="contact-form" novalidate>
+
+                <div class="form__group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                    <!-- Acá script.js inserta un mensaje de error si el
+                         campo queda vacío al enviar. -->
+                    <span class="form__error" id="error-nombre"></span>
+                </div>
+
+                <div class="form__group">
+                    <label for="empresa">Empresa</label>
+                    <input type="text" id="empresa" name="empresa">
+                </div>
+
+                <div class="form__group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" required>
+                    <span class="form__error" id="error-telefono"></span>
+                </div>
+
+                <div class="form__group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="form__error" id="error-email"></span>
+                </div>
+
+                <div class="form__group">
+                    <label for="servicio">Servicio requerido</label>
+                    <!-- select = "enum" con opciones fijas para elegir -->
+                    <select id="servicio" name="servicio" required>
+                        <option value="">Seleccione un servicio</option>
+                        <option value="Mecanizado Pesado">Mecanizado Pesado</option>
+                        <option value="Soldadura Industrial">Soldadura Industrial</option>
+                        <option value="Relleno y Reparación">Relleno y Reparación</option>
+                        <option value="Diseño e Ingeniería">Diseño e Ingeniería</option>
+                        <option value="Montaje Industrial">Montaje Industrial</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                    <span class="form__error" id="error-servicio"></span>
+                </div>
+
+                <div class="form__group form__group--full">
+                    <label for="descripcion">Descripción del trabajo</label>
+                    <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+                    <span class="form__error" id="error-descripcion"></span>
+                </div>
+
+                <!-- Mensaje general de éxito, oculto por defecto.
+                     script.js le agrega la clase "is-visible"
+                     cuando el envío es válido. -->
+                <p class="form__success" id="form-success" aria-live="polite">
+                    ¡Gracias! Su formulario fue enviado.
+                </p>
+
+                <button type="submit" class="btn btn--primary form__submit">
+                    Enviar Consulta
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <div class="precision-divider" aria-hidden="true"></div>
+
+    <!-- =========================================================
+         FOOTER
+         Pie de página con resumen de datos de contacto y el
+         año actual, que script.js completa automáticamente
+         (así nunca hay que venir a editar el HTML cada 1° de enero).
+    ========================================================== -->
+    <footer class="footer">
+        <div class="container footer__grid">
+
+            <div class="footer__brand">
+                <h3>METALÚRGICA BUSATTO</h3>
+                <p>Mecanizado Pesado • Soldadura • Reparación • Ingeniería • Montaje</p>
+            </div>
+
+            <div class="footer__contact">
+                <p>WhatsApp: <a href="https://wa.me/5493456252135">+54 9 3456 25-2135</a></p>
+                <p>Email: <a href="mailto:metalurgicabusatto@gmail.com">metalurgicabusatto@gmail.com</a></p>
+                <p>Email técnico: <a href="mailto:metalurgicabusatto.ing@gmail.com">metalurgicabusatto.ing@gmail.com</a></p>
+                <p>Lunes a Viernes: 07:00–12:00 y 12:30–18:00</p>
+            </div>
+        </div>
+
+        <div class="footer__bottom">
+            <!-- El "0000" es solo un valor inicial visible antes de que
+                 cargue JavaScript. Apenas carga script.js, lo reemplaza
+                 por el año real (ver función setCurrentYear()). -->
+            <p>&copy; <span id="year">0000</span> Metalúrgica Busatto. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- =========================================================
+         BOTÓN FLOTANTE DE WHATSAPP
+         Queda fijo en la esquina inferior derecha de la pantalla
+         todo el tiempo (position: fixed en CSS), sin importar
+         cuánto scroll haga el usuario.
+    ========================================================== -->
+    <a href="https://wa.me/5493456252135"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Contactar por WhatsApp">
+        <!-- Ícono simple de WhatsApp en SVG -->
+        <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 3C9 3 3 9 3 16c0 2.4.6 4.6 1.8 6.6L3 29l6.6-1.7c1.9 1 4 1.6 6.4 1.6 7 0 13-6 13-13S23 3 16 3zm0 23.6c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-4.1 1.1 1.1-4-.3-.4A10.6 10.6 0 0 1 5.4 16c0-5.9 4.7-10.6 10.6-10.6 5.9 0 10.6 4.7 10.6 10.6 0 5.9-4.7 10.6-10.6 10.6zm5.8-7.9c-.3-.2-1.9-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.6-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/>
+        </svg>
+    </a>
+
+    <!-- Nuestro JavaScript, siempre al final del <body>. Así el
+         navegador ya construyó todo el HTML antes de que el
+         script intente "buscar" elementos por su id. -->
+    <script src="./script.js"></script>
+</body>
+</html>
