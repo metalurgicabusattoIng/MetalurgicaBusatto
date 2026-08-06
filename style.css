@@ -930,6 +930,20 @@ section {
     );
 }
 
+/*NUEVO*/
+/* Transición para el cambio automático de imágenes */
+.gallery__item img {
+    transition:
+        transform 0.5s ease,
+        opacity 0.6s ease;
+}
+
+/* Estado temporal mientras se reemplaza la imagen */
+.gallery__item.changing img {
+    opacity: 0;
+}
+
+
 
 /* =====================================================================
    9. SECCIÓN "CAPACIDADES INDUSTRIALES" (fondo azul oscuro)
@@ -1396,6 +1410,11 @@ section {
            una arriba de la otra. */
         grid-template-columns: 1fr;
     }
+    .header__logo-img {
+    height: 50;   /* ajustá el tamaño */
+    width: auto;
+    display: block;
+}
 }
 
 /* --- TABLET (hasta 768px de ancho) ---
@@ -1464,6 +1483,13 @@ section {
     section {
         padding: 64px 0;
     }
+
+    .header__logo-img {
+    height: 30;   /* ajustá el tamaño */
+    width: auto;
+    display: block;
+}
+
 }
 
 /* --- MOBILE (360px en adelante, celulares chicos) --- */
@@ -1492,4 +1518,10 @@ section {
         bottom: 16px;
         right: 16px;
     }
+
+    .header__logo-img {
+    height: 20;   /* ajustá el tamaño */
+    width: auto;
+    display: block;
+}
 }

@@ -441,6 +441,127 @@ function inicializarFormularioContacto() {
 }
 }
 
+/*CAMBIO AUTOMATICO DE IMAGENES GALERIA*/
+// ======================================================
+// GALERIA ROTATIVA ALEATORIA
+// ======================================================
+
+const galleryImages = [
+  {
+    src: "./assets/TrabajosSueltos/Valvula Rotativa 1000.jpeg",
+    caption: "Valvula Rotativa 1000"
+  },
+  {
+    src: "./assets/TrabajosSueltos/Rotor Motor.jpeg",
+    caption: "Eje de Motor Trifasico"
+  },
+  {
+    src: "./assets/TrabajosSueltos/Rotor de molino.jpeg",
+    caption: "Eje con Martillo para Molienda"
+  },
+  {
+    src: "./assets/TrabajosSueltos/Eje motriz de elevador de troncos.jpeg",
+    caption: "Eje de Elevación de Troncos"
+  },
+  {
+    src: "./assets/TrabajosSueltos/CUERPO PETROLEO.jpeg",
+    caption: "Cuerpo Inferior Petróleo"
+  },
+  {
+    src: "./assets/TrabajosSueltos/Ventilador centrifugo1.jpeg",
+    caption: "Fabricación Ventilador Centrífugo"
+  },
+
+  {
+    src: "./assets/TrabajosSueltos/Eje Valvula Rotativa.jpeg",
+    caption: "Recambio de alabes Rotor Valvula Rotativa"
+  },
+  {
+    src: "./assets/TrabajosSueltos/Primaria FACO FRESADA.jpeg",
+    caption: "Fresado de Superficie de Apoyo Primaria"
+  },
+
+    {
+        src: "./assets/TrabajosSueltos/FabricacionBaldeRetro.jpeg",
+        caption: "Fabricación Balde Excavadora"
+    },
+
+    {
+        src: "./assets/TrabajosSueltos/Fabricacion Ventiladores.jpeg",
+        caption: "Fabricación Ventiladores"
+    },
+    {
+        src: "./assets/TrabajosSueltos/FresadoContracuchillas.jpeg",
+        caption: "Fabricación Ventiladores"
+    },
+    {
+        src: "./assets/TrabajosSueltos/ReparacionRotorImpactador.jpeg",
+        caption: "Reparación Rotor Impactador"
+    },
+    {
+        src: "./assets/TrabajosSueltos/ReparacionTurbina.jpeg",
+        caption: "Reparación Ventilador Centrifugo"
+    },
+     {
+        src: "./assets/TrabajosSueltos/Rolo.jpeg",
+        caption: "Fabricación Ventilador Centrifugo"
+    }
+];
+
+const galleryItems = document.querySelectorAll(
+  ".gallery__grid .gallery__item"
+);
+
+function changeRandomGalleryImage() {
+
+  // Elegir una de las tarjetas visibles
+  const item = galleryItems[
+    Math.floor(Math.random() * galleryItems.length)
+  ];
+
+  const img = item.querySelector("img");
+  const caption = item.querySelector("figcaption");
+
+  // Obtener todas las imágenes actualmente visibles
+  const activeImages = Array.from(galleryItems).map(i =>
+    i.querySelector("img").getAttribute("src")
+  );
+
+  let newImage;
+  let attempts = 0;
+
+  // Buscar una imagen que NO esté activa
+  do {
+    newImage = galleryImages[
+      Math.floor(Math.random() * galleryImages.length)
+    ];
+
+    attempts++;
+
+    // seguridad para evitar bucles infinitos
+    if (attempts > 50) return;
+
+  } while (activeImages.includes(newImage.src));
+
+  // Fade out
+  item.classList.add("changing");
+
+  setTimeout(() => {
+
+    img.src = newImage.src;
+    img.alt = newImage.caption;
+    caption.textContent = newImage.caption;
+
+    // Fade in
+    item.classList.remove("changing");
+
+  }, 600);
+}
+
+// Cambiar una imagen cada 2 segundos
+setInterval(changeRandomGalleryImage, 2000);
+
+/*FIN CAMBIO AUTOMATICO DE IMAGENES GALERIA*/
 
 /*BOTONES DE LINEA DE TIEMPO */
 const botones = document.querySelectorAll(".timeline-btn");
